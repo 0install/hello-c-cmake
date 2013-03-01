@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<interface xmlns="http://zero-install.sourceforge.net/2004/injector/interface" xmlns:compile="http://zero-install.sourceforge.net/2006/namespaces/0compile">
+  <name>hello-c-make</name>
+  <summary>template source package for a C program using cmake</summary>
+  <description>
+    This package demonstrates how to create a simple C program that uses cmake.
+  </description>
+
+  <group>
+    <implementation arch='*-src' id="." version="0.1-pre">
+      <command name='compile'>
+
+	<!-- We're using Python as a cross-platform scripting language here.
+	     If we had a cross-platform bash feed, we could use that instead... -->
+        <runner interface='http://repo.roscidus.com/python/python'>
+          <version before='3'/>
+        </runner>
+
+	<arg>-c</arg>
+	<arg>
+import os, subprocess
+
+cmake = os.environ["CMAKE"]
+distdir = os.environ["DISTDIR"]
+srcdir = os.path.join(os.environ["SRCDIR"], "src")
+
+subprocess.check_call([cmake, "-D", "CMAKE_INSTALL_PREFIX=" + distdir, srcdir])
+subprocess.check_call([cmake, "--build", ".", "--target", "install"])
+	</arg>
+
+	<requires interface='http://ryppl.github.com/feeds/cmake.xml'>
+	  <executable-in-var name='CMAKE'/>
+	</requires>
+
+	<compile:implementation main='bin/hello'/>
+      </command>
+    </implementation>
+  </group>
+</interface>
