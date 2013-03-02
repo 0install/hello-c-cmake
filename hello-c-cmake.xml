@@ -8,28 +8,12 @@
 
   <group>
     <implementation arch='*-src' id="." version="0.1-pre">
-      <command name='compile'>
-
-	<!-- We're using Python as a cross-platform scripting language here.
-	     If we had a cross-platform bash feed, we could use that instead... -->
-        <runner interface='http://repo.roscidus.com/python/python'>
-          <version before='3'/>
-        </runner>
-
-	<arg>-c</arg>
-	<arg>
-import os, subprocess
-
-cmake = os.environ["CMAKE"]
-distdir = os.environ["DISTDIR"]
-srcdir = os.path.join(os.environ["SRCDIR"], "src")
-
-subprocess.check_call([cmake, "-D", "CMAKE_INSTALL_PREFIX=" + distdir, srcdir])
-subprocess.check_call([cmake, "--build", ".", "--target", "install"])
-	</arg>
+      <command name='compile' shell-command='"$CMAKE" -D "CMAKE_INSTALL_PREFIX=$DISTDIR" "$SRCDIR/src" &amp;&amp; "$CMAKE" --build . --target install'>
 
 	<requires interface='http://ryppl.github.com/feeds/cmake.xml'>
-	  <executable-in-var name='CMAKE'/>
+	  <!-- This doesn't work on Windows at present -->
+	  <!-- <executable-in-var name='CMAKE'/> -->
+	  <environment name='CMAKE' insert='bin/cmake' mode='replace'/>
 	</requires>
 
 	<compile:implementation main='bin/hello'/>
