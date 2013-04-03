@@ -7,13 +7,11 @@
   </description>
 
   <group>
-    <implementation arch='*-src' id="." version="0.1-pre">
-      <command name='compile' shell-command='"$CMAKE" -D "CMAKE_INSTALL_PREFIX=$DISTDIR" "$SRCDIR/src" &amp;&amp; "$CMAKE" --build . --target install'>
+    <implementation arch='*-src' id="." version="0.1-pre" compile:min-version='1.1'>
+      <command name='compile' shell-command='cmake -D "CMAKE_INSTALL_PREFIX=$DISTDIR" "$SRCDIR/src" &amp;&amp; cmake --build . --target install'>
 
 	<requires interface='http://ryppl.github.com/feeds/cmake.xml'>
-	  <!-- This doesn't work on Windows at present -->
-	  <!-- <executable-in-var name='CMAKE'/> -->
-	  <environment name='CMAKE' insert='bin/cmake' mode='replace'/>
+	  <executable-in-path name='cmake'/>
 	</requires>
 
 	<compile:implementation main='bin/hello'/>
