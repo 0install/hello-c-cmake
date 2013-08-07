@@ -13,6 +13,9 @@
 	<requires interface='http://ryppl.github.com/feeds/cmake.xml'>
 	  <executable-in-path name='cmake'/>
 	</requires>
+	<requires interface="http://repo.roscidus.com/devel/make">
+	  <executable-in-path name="make"/>
+	</requires>
 
 	<compile:implementation main='bin/hello'/>
       </command>
